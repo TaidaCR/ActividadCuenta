@@ -44,9 +44,20 @@ public class TestCuenta {
         cuenta.ingresar(10);
         cuenta.ingresar(20);
         cuenta.gastar(15);
-        assertEquals(cuenta.getSaldo(), 115, 0.000001);
-        assertEquals(cuenta.getTotalIngresos(), 30, 0.00001);
-        assertEquals(cuenta.getTotalGastos(), 15, 0.00001);
+
+        assertEquals(115, cuenta.getSaldo(), 0.000001);
+        assertEquals(30, cuenta.getTotalIngresos(), 0.00001);
+        assertEquals(15, cuenta.getTotalGastos(), 0.00001);
+    }
+
+    @Test
+    public void testInicializaFloatsACero () {
+        Cuenta cuenta = new Cuenta(100);
+
+        assertEquals(cuenta.getSaldo(), 100, 0.0001);        
+        assertEquals(cuenta.getTotalIngresos(), 0, 0.0001);        
+        assertEquals(cuenta.getTotalGastos(), 0, 0.0001);
+        
     }
 
 }

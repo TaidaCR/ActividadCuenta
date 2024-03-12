@@ -5,6 +5,7 @@ public class Movimiento {
     private String asunto;
     private float valor;
 
+    //LocalDate la java.time
     public Movimiento(String fecha, String asunto, float valor) {
         this.fecha = fecha;
         this.asunto = asunto;

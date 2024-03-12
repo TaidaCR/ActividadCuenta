@@ -2,9 +2,14 @@ package src.entities;
 
 public class Cuenta {
     private float saldo;
+    private float ingresos;
+    private float gastos;
+
 
     public Cuenta(float saldo) {
         this.saldo = saldo;
+        ingresos = 0;
+        gastos = 0;
     }
 
     public Cuenta() {
@@ -17,10 +22,21 @@ public class Cuenta {
 
     public void ingresar(float ingreso) {
         saldo += ingreso;
+        ingresos += ingreso;
     }
 
     public void gastar(float gasto) {
         saldo -= gasto;
+        gastos += gasto;
     }
+
+    public float getTotalIngresos() {
+        return ingresos;
+    }
+
+    public float getTotalGastos() {
+        return gastos;
+    }
+
     
 }

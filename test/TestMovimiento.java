@@ -15,4 +15,5 @@ public class TestMovimiento {
         assertEquals(mov.getAsunto(), "Cine");
         assertEquals(mov.getValor(), -15, 0.00001);
     }
+
 }
