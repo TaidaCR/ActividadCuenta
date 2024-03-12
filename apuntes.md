@@ -4,6 +4,12 @@
          - fecha 
          - valor (float)
          - asunto (String)
+   - Ingreso (extend Movimiento)
+         - categoriaIngreso (enum)
+   - Gasto (extend Movimiento)
+         - categoriaGasto (enum)
+
+
 
    - Cuenta
       - Atributos
