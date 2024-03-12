@@ -5,7 +5,7 @@ public class Cuenta {
     private float ingresos;
     private float gastos;
 
-
+    // Constructor principal
     public Cuenta(float saldo) {
         this.saldo = saldo;
         ingresos = 0;
