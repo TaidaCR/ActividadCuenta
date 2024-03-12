@@ -18,11 +18,16 @@ public class Main {
 
             switch (respuesta) {
                 case "I":
+                    System.out.print("Cantidad: ");
                     cantidad = scanner.nextFloat();
+                    scanner.nextLine();
                     acumulador.ingresar(cantidad);
+
                     break;
                 case "G":
+                    System.out.print("Cantidad: ");
                     cantidad = scanner.nextFloat();
+                    scanner.nextLine();
                     acumulador.gastar(cantidad);
                     break;
                 default: // Si no es I G o S habra que volver a pedir
@@ -36,6 +41,11 @@ public class Main {
          * Imprimir Total gastos
          * Imprimir Balance
          */
-        System.out.println("Ingresos:");
+        System.out.printf("Ingresos: %15.2f Euros\n", acumulador.getTotalIngresos());
+        System.out.printf("Gastos..: %15.2f Euros\n", acumulador.getTotalGastos());
+        System.out.printf("Balance.: %15.2f Euros\n", acumulador.getTotalIngresos() - acumulador.getTotalGastos());
+        System.out.printf("Saldo...: %15.2f Euros\n", acumulador.getSaldo());
+
+        scanner.close();
     }
 }
