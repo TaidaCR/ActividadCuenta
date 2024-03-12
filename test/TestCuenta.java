@@ -2,9 +2,13 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDate;
+
 import org.junit.Test;
 
+import src.entities.CategoriaIngreso;
 import src.entities.Cuenta;
+import src.entities.Ingreso;
 
 public class TestCuenta {
     @Test
@@ -25,8 +29,18 @@ public class TestCuenta {
     public void testIngresar(){
         Cuenta cuenta = new Cuenta(100);
 
-        cuenta.ingresar(10);
-        assertEquals(cuenta.getSaldo(), 110, 0.000001);
+        cuenta.ingresar(10, CategoriaIngreso.OTROS, LocalDate.of(1990, 11, 11), "Clases particulares");
+        cuenta.ingresar(20, CategoriaIngreso.NEGOCIOS, LocalDate.of(1990, 11, 12), "Otro concepto");
+        
+        assertEquals(cuenta.getSaldo(), 130, 0.000001);
+
+        Ingreso[] movimientos = cuenta.getIngresos();
+
+        assertEquals(movimientos.length, 2 );
+        assertEquals(movimientos[0].getCategoria(), CategoriaIngreso.OTROS);
+        assertEquals(movimientos[1].getCategoria(), CategoriaIngreso.NEGOCIOS);
+
+        // hacer el resto de aserciones para comprobar el resto de atributos de cada ingreso
     }
 
     @Test
