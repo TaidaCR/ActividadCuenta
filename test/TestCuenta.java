@@ -37,8 +37,18 @@ public class TestCuenta {
         Ingreso[] movimientos = cuenta.getIngresos();
 
         assertEquals(movimientos.length, 2 );
+        
         assertEquals(movimientos[0].getCategoria(), CategoriaIngreso.OTROS);
         assertEquals(movimientos[1].getCategoria(), CategoriaIngreso.NEGOCIOS);
+
+        assertEquals(movimientos[0].getFecha(), LocalDate.of(1990, 11, 11));
+        assertEquals(movimientos[1].getFecha(), LocalDate.of(1990, 11, 12));
+
+        assertEquals(movimientos[0].getConcepto(), "Clases particulares");
+        assertEquals(movimientos[1].getConcepto(), "Otro concepto");
+
+        assertEquals(movimientos[0].getValor(), 10, 0.00001);
+        assertEquals(movimientos[1].getValor(), 20, 0.00001);
 
         // hacer el resto de aserciones para comprobar el resto de atributos de cada ingreso
     }
@@ -55,8 +65,8 @@ public class TestCuenta {
     public void testIngresosGastos(){
         Cuenta cuenta = new Cuenta(100);
 
-        cuenta.ingresar(10);
-        cuenta.ingresar(20);
+        cuenta.ingresar(10, CategoriaIngreso.EMPLEO, LocalDate.now(), "");
+        cuenta.ingresar(20, CategoriaIngreso.EMPLEO, LocalDate.now(), "");
         cuenta.gastar(15);
 
         assertEquals(115, cuenta.getSaldo(), 0.000001);

@@ -1,9 +1,13 @@
 package src.entities;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 public class Cuenta {
     private float saldo;
     private float ingresos;
     private float gastos;
+    private ArrayList<Ingreso> listaIngresos = new ArrayList<>();
 
     // Constructor principal
     public Cuenta(float saldo) {
@@ -20,9 +24,18 @@ public class Cuenta {
         return saldo;
     }
 
-    public void ingresar(float ingreso) {
-        saldo += ingreso;
-        ingresos += ingreso;
+    public void ingresar(float valor, CategoriaIngreso categoria, LocalDate fecha, String concepto) {
+        saldo += valor;
+        ingresos += valor;
+
+        /*
+         * Instanciar el ingreso con los argumentos de entrada
+         * añadir el ingreso nuevo a this.listaIngresos
+         */
+
+        Ingreso ing = new Ingreso(fecha, concepto, valor, categoria);
+        listaIngresos.add(ing);
+
     }
 
     public void gastar(float gasto) {
@@ -37,6 +50,12 @@ public class Cuenta {
     public float getTotalGastos() {
         return gastos;
     }
+
+    public Ingreso[] getIngresos() {
+        return listaIngresos.toArray(new Ingreso[0]);
+    }
+
+   
 
     
 }
