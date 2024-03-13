@@ -57,6 +57,14 @@ public class Cuenta {
 
     
     public Ingreso[] getIngresos() {
+        /*
+         * Recorrer listaMovimientos y quedarme solo con los ingresos
+         * Devolver la lista de ingresos
+         * 
+         * 
+         */
+        
+
         return listaMovimientos.toArray(new Ingreso[0]);
     }
 
@@ -70,3 +78,8 @@ public class Cuenta {
 
     
 }
+
+/*
+ * 
+ * 
+ */

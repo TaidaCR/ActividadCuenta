@@ -138,4 +138,33 @@ public class TestCuenta {
         
     }
 
+    @Test
+    public void testGetIngresosEnMovimientosMixtos() {
+        Cuenta cuenta = new Cuenta();
+
+        cuenta.ingresar(100, CategoriaIngreso.EMPLEO, LocalDate.of(2023, 1, 1), "Movimiento 1");
+        cuenta.gastar(50, CategoriaGasto.OCIO, LocalDate.of(2022, 1, 1), "Movimiento 2");
+        cuenta.ingresar(100, CategoriaIngreso.NEGOCIOS, LocalDate.of(2021, 1, 1), "Movimiento 3");
+        cuenta.gastar(50, CategoriaGasto.CULTURA, LocalDate.of(2020, 1, 1), "Movimiento 4");
+
+        Ingreso[] ingresos = cuenta.getIngresos();
+
+        assertEquals(ingresos.length, 2);
+        
+        assertEquals(ingresos[0].getValor(), 100, 0.00001);
+        assertEquals(ingresos[1].getValor(), 100, 0.00001);
+
+        assertEquals(ingresos[0].getCategoria(), CategoriaIngreso.EMPLEO);
+        assertEquals(ingresos[1].getCategoria(), CategoriaIngreso.NEGOCIOS);
+
+        assertEquals(ingresos[0].getFecha(), LocalDate.of(2023,1,1));
+        assertEquals(ingresos[1].getFecha(), LocalDate.of(2021, 1 , 1));
+
+        assertEquals(ingresos[0].getConcepto(), "Movimiento 1");
+        assertEquals(ingresos[1].getConcepto(), "Movimiento 3");
+
+
+
+    }
+
 }
