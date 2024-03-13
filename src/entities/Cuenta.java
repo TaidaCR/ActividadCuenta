@@ -57,15 +57,15 @@ public class Cuenta {
 
     
     public Ingreso[] getIngresos() {
-        /*
-         * Recorrer listaMovimientos y quedarme solo con los ingresos
-         * Devolver la lista de ingresos
-         * 
-         * 
-         */
+        ArrayList <Ingreso> ingresos = new ArrayList<> ();
         
+        for(Movimiento mov: listaMovimientos) {
+            if (mov instanceof Ingreso) {
+                ingresos.add((Ingreso)mov);
+            }
+        }
 
-        return listaMovimientos.toArray(new Ingreso[0]);
+        return ingresos.toArray(new Ingreso[0]);
     }
 
     public Gasto[] getGastos() {
