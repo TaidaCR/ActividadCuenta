@@ -127,14 +127,14 @@ public class TestCuenta {
         assertEquals(listaDeMovimientos[3].getCategoria(), CategoriaGasto.CULTURA);
 
         assertEquals(listaDeMovimientos[0].getFecha(), LocalDate.of(2023,1,1));
-        assertEquals(listaDeMovimientos[0].getFecha(), LocalDate.of(2022,1,1));
-        assertEquals(listaDeMovimientos[0].getFecha(), LocalDate.of(2021,1,1));
-        assertEquals(listaDeMovimientos[0].getFecha(), LocalDate.of(2020,1,1));
+        assertEquals(listaDeMovimientos[1].getFecha(), LocalDate.of(2022,1,1));
+        assertEquals(listaDeMovimientos[2].getFecha(), LocalDate.of(2021,1,1));
+        assertEquals(listaDeMovimientos[3].getFecha(), LocalDate.of(2020,1,1));
 
         assertEquals(listaDeMovimientos[0].getConcepto(), "Movimiento 1");
-        assertEquals(listaDeMovimientos[0].getConcepto(), "Movimiento 2");
-        assertEquals(listaDeMovimientos[0].getConcepto(), "Movimiento 3");
-        assertEquals(listaDeMovimientos[0].getConcepto(), "Movimiento 4");
+        assertEquals(listaDeMovimientos[1].getConcepto(), "Movimiento 2");
+        assertEquals(listaDeMovimientos[2].getConcepto(), "Movimiento 3");
+        assertEquals(listaDeMovimientos[3].getConcepto(), "Movimiento 4");
         
     }
 

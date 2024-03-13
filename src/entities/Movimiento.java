@@ -5,6 +5,7 @@ public class Movimiento {
     private LocalDate fecha;
     private String concepto;
     private float valor;
+    private Enum<?> categoria;
 
     //contructor principal
     public Movimiento(LocalDate fecha, String concepto, float valor) {
@@ -23,8 +24,6 @@ public class Movimiento {
         this(LocalDate.now(), concepto, valor);
     }
 
-
-
     public LocalDate getFecha() {
         return fecha;
     }
@@ -35,6 +34,10 @@ public class Movimiento {
 
     public float getValor() {
         return valor;
+    }
+
+    public Enum<?> getCategoria() {
+        return categoria;
     }
 
 }

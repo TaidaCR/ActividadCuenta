@@ -2,13 +2,13 @@ package src.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cuenta {
     private float saldo;
     private float ingresos;
     private float gastos;
-    private ArrayList<Ingreso> listaIngresos = new ArrayList<>();    
-    private ArrayList<Gasto> listaGastos = new ArrayList<>();
+    private ArrayList<Movimiento> listaMovimientos = new ArrayList<>();
 
     // Constructor principal
     public Cuenta(float saldo) {
@@ -35,7 +35,7 @@ public class Cuenta {
          */
 
         Ingreso ing = new Ingreso(fecha, concepto, valor, categoria);
-        listaIngresos.add(ing);
+        listaMovimientos.add(ing);
 
     }
 
@@ -44,7 +44,7 @@ public class Cuenta {
         gastos += valor;
 
         Gasto gast = new Gasto(fecha, concepto, valor, categoria);
-        listaGastos.add(gast);
+        listaMovimientos.add(gast);
     }
 
     public float getTotalIngresos() {
@@ -57,14 +57,16 @@ public class Cuenta {
 
     
     public Ingreso[] getIngresos() {
-        return listaIngresos.toArray(new Ingreso[0]);
-    }
-    
-    public Gasto[] getGastos() {
-        return listaGastos.toArray(new Gasto[0]);
+        return listaMovimientos.toArray(new Ingreso[0]);
     }
 
-   
+    public Gasto[] getGastos() {
+        return listaMovimientos.toArray(new Gasto[0]);
+    }
+
+    public Movimiento[] getListaMovimientos() {
+        return listaMovimientos.toArray(new Movimiento[0]);
+    }
 
     
 }
