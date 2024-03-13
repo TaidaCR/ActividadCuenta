@@ -6,8 +6,10 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
+import src.entities.CategoriaGasto;
 import src.entities.CategoriaIngreso;
 import src.entities.Cuenta;
+import src.entities.Gasto;
 import src.entities.Ingreso;
 
 public class TestCuenta {
@@ -53,12 +55,30 @@ public class TestCuenta {
         // hacer el resto de aserciones para comprobar el resto de atributos de cada ingreso
     }
 
-    @Test
+  @Test
     public void testGastar(){
         Cuenta cuenta = new Cuenta(100);
 
-        cuenta.gastar(10);
-        assertEquals(cuenta.getSaldo(), 90, 0.000002);
+        cuenta.gastar(10, CategoriaGasto.NECESIDAD, LocalDate.of(1990, 11, 11), "Comida");
+        cuenta.gastar(20, CategoriaGasto.OCIO, LocalDate.of(1990, 11, 12), "Cine");
+
+        assertEquals(cuenta.getSaldo(), 70, 0.000002);
+
+        Gasto[] movimientosGasto = cuenta.getGastos();
+
+        assertEquals(movimientosGasto.length, 2 );
+        
+        assertEquals(movimientosGasto[0].getCategoria(), CategoriaGasto.NECESIDAD);
+        assertEquals(movimientosGasto[1].getCategoria(), CategoriaGasto.OCIO);
+
+        assertEquals(movimientosGasto[0].getFecha(), LocalDate.of(1990, 11, 11));
+        assertEquals(movimientosGasto[1].getFecha(), LocalDate.of(1990, 11, 12));
+
+        assertEquals(movimientosGasto[0].getConcepto(), "Comida");
+        assertEquals(movimientosGasto[1].getConcepto(), "Cine");
+
+        assertEquals(movimientosGasto[0].getValor(), 10, 0.00001);
+        assertEquals(movimientosGasto[1].getValor(), 20, 0.00001);
     }
 
     @Test
@@ -67,7 +87,7 @@ public class TestCuenta {
 
         cuenta.ingresar(10, CategoriaIngreso.EMPLEO, LocalDate.now(), "");
         cuenta.ingresar(20, CategoriaIngreso.EMPLEO, LocalDate.now(), "");
-        cuenta.gastar(15);
+        cuenta.gastar(15, CategoriaGasto.CULTURA, LocalDate.now(), "");
 
         assertEquals(115, cuenta.getSaldo(), 0.000001);
         assertEquals(30, cuenta.getTotalIngresos(), 0.00001);

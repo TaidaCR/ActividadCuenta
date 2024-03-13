@@ -7,7 +7,8 @@ public class Cuenta {
     private float saldo;
     private float ingresos;
     private float gastos;
-    private ArrayList<Ingreso> listaIngresos = new ArrayList<>();
+    private ArrayList<Ingreso> listaIngresos = new ArrayList<>();    
+    private ArrayList<Gasto> listaGastos = new ArrayList<>();
 
     // Constructor principal
     public Cuenta(float saldo) {
@@ -38,9 +39,12 @@ public class Cuenta {
 
     }
 
-    public void gastar(float gasto) {
-        saldo -= gasto;
-        gastos += gasto;
+    public void gastar(float valor, CategoriaGasto categoria, LocalDate fecha, String concepto) {
+        saldo -= valor;
+        gastos += valor;
+
+        Gasto gast = new Gasto(fecha, concepto, valor, categoria);
+        listaGastos.add(gast);
     }
 
     public float getTotalIngresos() {
@@ -51,8 +55,13 @@ public class Cuenta {
         return gastos;
     }
 
+    
     public Ingreso[] getIngresos() {
         return listaIngresos.toArray(new Ingreso[0]);
+    }
+    
+    public Gasto[] getGastos() {
+        return listaGastos.toArray(new Gasto[0]);
     }
 
    
