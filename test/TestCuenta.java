@@ -11,6 +11,7 @@ import src.entities.CategoriaIngreso;
 import src.entities.Cuenta;
 import src.entities.Gasto;
 import src.entities.Ingreso;
+import src.entities.Movimiento;
 
 public class TestCuenta {
     @Test
@@ -101,6 +102,39 @@ public class TestCuenta {
         assertEquals(cuenta.getSaldo(), 100, 0.0001);        
         assertEquals(cuenta.getTotalIngresos(), 0, 0.0001);        
         assertEquals(cuenta.getTotalGastos(), 0, 0.0001);
+    }
+
+    @Test
+    public void testListaMovimientos() {
+        Cuenta cuenta = new Cuenta();
+
+        cuenta.ingresar(100, CategoriaIngreso.EMPLEO, LocalDate.of(2023, 1, 1), "Movimiento 1");
+        cuenta.gastar(50, CategoriaGasto.OCIO, LocalDate.of(2022, 1, 1), "Movimiento 2");
+        cuenta.ingresar(100, CategoriaIngreso.NEGOCIOS, LocalDate.of(2021, 1, 1), "Movimiento 3");
+        cuenta.gastar(50, CategoriaGasto.CULTURA, LocalDate.of(2020, 1, 1), "Movimiento 4");
+        
+        Movimiento[] listaDeMovimientos = cuenta.getListaMovimientos();
+
+        assertEquals(listaDeMovimientos.length, 4);
+        assertEquals(listaDeMovimientos[0].getValor(), 100, 0.00001);
+        assertEquals(listaDeMovimientos[1].getValor(), 50, 0.00001);
+        assertEquals(listaDeMovimientos[2].getValor(), 100, 0.00001);
+        assertEquals(listaDeMovimientos[3].getValor(), 50, 0.00001);      
+        
+        assertEquals(listaDeMovimientos[0].getCategoria(), CategoriaIngreso.EMPLEO);
+        assertEquals(listaDeMovimientos[1].getCategoria(), CategoriaGasto.OCIO);
+        assertEquals(listaDeMovimientos[2].getCategoria(), CategoriaIngreso.NEGOCIOS);
+        assertEquals(listaDeMovimientos[3].getCategoria(), CategoriaGasto.CULTURA);
+
+        assertEquals(listaDeMovimientos[0].getFecha(), LocalDate.of(2023,1,1));
+        assertEquals(listaDeMovimientos[0].getFecha(), LocalDate.of(2022,1,1));
+        assertEquals(listaDeMovimientos[0].getFecha(), LocalDate.of(2021,1,1));
+        assertEquals(listaDeMovimientos[0].getFecha(), LocalDate.of(2020,1,1));
+
+        assertEquals(listaDeMovimientos[0].getConcepto(), "Movimiento 1");
+        assertEquals(listaDeMovimientos[0].getConcepto(), "Movimiento 2");
+        assertEquals(listaDeMovimientos[0].getConcepto(), "Movimiento 3");
+        assertEquals(listaDeMovimientos[0].getConcepto(), "Movimiento 4");
         
     }
 

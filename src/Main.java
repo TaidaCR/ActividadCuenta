@@ -3,6 +3,7 @@ package src;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import src.entities.CategoriaIngreso;
 import src.entities.Cuenta;
 import src.entities.Movimiento;
 
@@ -19,6 +20,7 @@ public class Main {
             float cantidad;
             String concepto;
             LocalDate fecha;
+            CategoriaIngreso catIngreso;
 
 
             switch (respuesta.toUpperCase()) {
@@ -27,22 +29,25 @@ public class Main {
                     cantidad = scanner.nextFloat();
                     scanner.nextLine();
                     
-
                     System.out.print("Concepto: ");
                     concepto = scanner.nextLine();
 
                     System.out.println("Fecha: ");
                     fecha = LocalDate.parse(scanner.nextLine());
 
+                    System.out.print("Categoria: ");
+                    String nombreCategoria = scanner.nextLine();
+                    catIngreso = CategoriaIngreso.valueOf(nombreCategoria);
+
                     Movimiento mv = new Movimiento(fecha, concepto, cantidad);
-                    acumulador.ingresar(cantidad);
+                    acumulador.ingresar(cantidad, catIngreso, fecha, concepto);
 
                     break;
                 case "G":
                     System.out.print("Cantidad: ");
                     cantidad = scanner.nextFloat();
                     scanner.nextLine();
-                    acumulador.gastar(cantidad);
+                    //acumulador.gastar(cantidad);
                     break;
                 case "S": // Si no es I G o S habra que volver a pedir
                     seguirEnBucle = false;

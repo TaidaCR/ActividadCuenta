@@ -17,3 +17,8 @@
       - Metodos
          - Ingresar(float valor)
          - Gastar(float valor)
+         - getTotalIngresos()
+         - getTotalGastos()
+         - getIngresos()
+         - getGastos()
+         - getMovimientos()
