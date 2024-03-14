@@ -1,4 +1,4 @@
-package src.entities;
+package src.logica;
 
 import java.time.LocalDate;
 

@@ -3,15 +3,17 @@ package src;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-import src.entities.CategoriaIngreso;
-import src.entities.Cuenta;
-import src.entities.Movimiento;
+import src.logica.CategoriaIngreso;
+import src.logica.Cuenta;
+import src.logica.Movimiento;
+import src.presentacion.Validador;
 
 public class Main {
     public static void main(String[] args) {
         Cuenta acumulador = new Cuenta();
         boolean seguirEnBucle = true;
         Scanner scanner = new Scanner(System.in);
+        Validador validador = new Validador();
         
 
         while (seguirEnBucle) {
@@ -25,16 +27,13 @@ public class Main {
 
             switch (respuesta.toUpperCase()) {
                 case "I":
-                    System.out.print("Cantidad: ");
-                    cantidad = scanner.nextFloat();
-                    scanner.nextLine();
+                    cantidad = validador.pideNumero("Cantidad: ", "Debe ser un número válido.");
                     
                     System.out.print("Concepto: ");
                     concepto = scanner.nextLine();
 
-                    System.out.println("Fecha: ");
-                    fecha = LocalDate.parse(scanner.nextLine());
-
+                    fecha = validador.pideFecha("Fecha:", "La fecha debe ser YYYY-MM-DD.");
+                    
                     System.out.print("Categoria: ");
                     String nombreCategoria = scanner.nextLine();
                     catIngreso = CategoriaIngreso.valueOf(nombreCategoria);

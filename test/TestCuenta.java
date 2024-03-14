@@ -6,12 +6,12 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-import src.entities.CategoriaGasto;
-import src.entities.CategoriaIngreso;
-import src.entities.Cuenta;
-import src.entities.Gasto;
-import src.entities.Ingreso;
-import src.entities.Movimiento;
+import src.logica.CategoriaGasto;
+import src.logica.CategoriaIngreso;
+import src.logica.Cuenta;
+import src.logica.Gasto;
+import src.logica.Ingreso;
+import src.logica.Movimiento;
 
 public class TestCuenta {
     @Test
@@ -138,19 +138,18 @@ public class TestCuenta {
         
     }
 
-    @Test
-    public void testGetIngresosEnMovimientosMixtos() {
+    @Test 
+    public void testGetIngresosGastosEnMovimientosMixtos() {
+
         Cuenta cuenta = new Cuenta();
 
         cuenta.ingresar(100, CategoriaIngreso.EMPLEO, LocalDate.of(2023, 1, 1), "Movimiento 1");
-        cuenta.gastar(50, CategoriaGasto.OCIO, LocalDate.of(2022, 1, 1), "Movimiento 2");
+        cuenta.gastar(50, CategoriaGasto.OCIO, LocalDate.of(2022,1,1), "Movimiento 2");
         cuenta.ingresar(100, CategoriaIngreso.NEGOCIOS, LocalDate.of(2021, 1, 1), "Movimiento 3");
-        cuenta.gastar(50, CategoriaGasto.CULTURA, LocalDate.of(2020, 1, 1), "Movimiento 4");
+        cuenta.gastar(50, CategoriaGasto.CULTURA, LocalDate.of(2020,1,1), "Movimiento 4");
 
-        Ingreso[] ingresos = cuenta.getIngresos();
+        Ingreso [] ingresos = cuenta.getIngresos();
 
-        assertEquals(ingresos.length, 2);
-        
         assertEquals(ingresos[0].getValor(), 100, 0.00001);
         assertEquals(ingresos[1].getValor(), 100, 0.00001);
 
@@ -158,13 +157,25 @@ public class TestCuenta {
         assertEquals(ingresos[1].getCategoria(), CategoriaIngreso.NEGOCIOS);
 
         assertEquals(ingresos[0].getFecha(), LocalDate.of(2023,1,1));
-        assertEquals(ingresos[1].getFecha(), LocalDate.of(2021, 1 , 1));
+        assertEquals(ingresos[1].getFecha(), LocalDate.of(2021,1,1));
 
         assertEquals(ingresos[0].getConcepto(), "Movimiento 1");
         assertEquals(ingresos[1].getConcepto(), "Movimiento 3");
 
+        Gasto [] gastos = cuenta.getGastos();
+
+        assertEquals(gastos[0].getValor(), 50, 0.00001);
+        assertEquals(gastos[1].getValor(), 50, 0.00001);
+
+        assertEquals(gastos[0].getCategoria(), CategoriaGasto.OCIO);
+        assertEquals(gastos[1].getCategoria(), CategoriaGasto.CULTURA);
+
+        assertEquals(gastos[0].getFecha(), LocalDate.of(2022,1,1));
+        assertEquals(gastos[1].getFecha(), LocalDate.of(2020,1,1));
+
+        assertEquals(gastos[0].getConcepto(), "Movimiento 2");
+        assertEquals(gastos[1].getConcepto(), "Movimiento 4");
 
 
     }
-
 }

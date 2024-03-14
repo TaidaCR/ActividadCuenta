@@ -1,4 +1,4 @@
-package src.entities;
+package src.logica;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -69,7 +69,15 @@ public class Cuenta {
     }
 
     public Gasto[] getGastos() {
-        return listaMovimientos.toArray(new Gasto[0]);
+
+        ArrayList<Gasto> gastos = new ArrayList<>();
+
+        for (Movimiento mov : listaMovimientos) {
+            if (mov instanceof Gasto) {
+                gastos.add((Gasto)mov);
+            }
+        }
+        return gastos.toArray(new Gasto[0]);
     }
 
     public Movimiento[] getListaMovimientos() {

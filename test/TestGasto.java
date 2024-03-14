@@ -6,9 +6,8 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-import src.entities.CategoriaGasto;
-
-import src.entities.Gasto;
+import src.logica.CategoriaGasto;
+import src.logica.Gasto;
 
 public class TestGasto {
     @Test

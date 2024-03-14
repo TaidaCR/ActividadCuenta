@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-import src.entities.Movimiento;
+import src.logica.Movimiento;
 
 public class TestMovimiento {
     @Test

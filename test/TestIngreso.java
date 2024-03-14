@@ -6,8 +6,8 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-import src.entities.CategoriaIngreso;
-import src.entities.Ingreso;
+import src.logica.CategoriaIngreso;
+import src.logica.Ingreso;
 
 public class TestIngreso {
     @Test
