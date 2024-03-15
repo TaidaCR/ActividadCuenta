@@ -34,9 +34,8 @@ public class Main {
 
                     fecha = validador.pideFecha("Fecha:", "La fecha debe ser YYYY-MM-DD.");
                     
-                    System.out.print("Categoria: ");
-                    String nombreCategoria = scanner.nextLine();
-                    catIngreso = CategoriaIngreso.valueOf(nombreCategoria);
+                    catIngreso = validador.pideCatIngreso("Categoria Ingreso", "Elige una de las opciones.");
+                
 
                     Movimiento mv = new Movimiento(fecha, concepto, cantidad);
                     acumulador.ingresar(cantidad, catIngreso, fecha, concepto);

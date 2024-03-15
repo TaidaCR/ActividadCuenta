@@ -49,10 +49,10 @@ public class Validador {
         return valor;
     }
 
-    public CategoriaIngreso pideEnum(String mensaje, String mensajeError) {
+    public CategoriaIngreso pideCatIngreso(String mensaje, String mensajeError) {
         boolean enumIncorrecto = true;
-        CategoriaIngreso valorEnum;
         StringBuilder sb = new StringBuilder();
+        CategoriaIngreso resultado = null;
 
         sb.append(String.format("%s (", mensaje));
         for (CategoriaIngreso cat:CategoriaIngreso.values()) {
@@ -63,21 +63,28 @@ public class Validador {
 
         mensaje = sb.toString();
 
-        String categoria = "";
+        String categoriaIntroducidaPorUsuario = "";
         while (enumIncorrecto) {
             System.out.print(mensaje);
-            categoria = scanner.nextLine(); //EMPLEO
-
-            for (CategoriaIngreso cat:CategoriaIngreso.values()) {
-                if (categoria == cat.name()) {
-                    return cat;
-                }
+            categoriaIntroducidaPorUsuario = scanner.nextLine(); //EMPLEO
+            // Forma 1
+            // for (CategoriaIngreso cat:CategoriaIngreso.values()) {
+            //     if (categoriaIntroducidaPorUsuario == cat.name()) {
+            //         return cat;
+            //     }
+            // }
+            // System.out.println(mensajeError);
+            // Forma 2
+            try {
+                resultado = CategoriaIngreso.valueOf(categoriaIntroducidaPorUsuario);
+                enumIncorrecto = false;
+            } catch (IllegalArgumentException err) {
+                System.out.println(mensajeError);
             }
-
-
+            
         }
 
-        return CategoriaIngreso.valueOf(categoria);
+        return resultado;
 
     }
 }
