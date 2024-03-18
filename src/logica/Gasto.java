@@ -13,4 +13,8 @@ public class Gasto extends Movimiento {
     public CategoriaGasto getCategoria() {
         return categoria;
     }
+
+    public void save(String fichero) {
+
+    }
 }

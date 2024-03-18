@@ -6,6 +6,7 @@ import java.util.Scanner;
 import src.logica.CategoriaGasto;
 import src.logica.CategoriaIngreso;
 import src.logica.Cuenta;
+import src.logica.Gasto;
 import src.presentacion.Validador;
 
 public class Main {
@@ -17,7 +18,7 @@ public class Main {
         
 
         while (seguirEnBucle) {
-            System.out.println("SOY LA MODIFICACION DE TAIDA");
+            System.out.println("SOY LA MODIFICACION DE JULIA");
             System.out.print("Quiere hacer Ingreso / Gasto / Salir? ");
             String respuesta = scanner.nextLine();
             float cantidad;
@@ -51,6 +52,8 @@ public class Main {
                     catGasto = validador.pideCatGasto("Categoria Gasto", "Elige una de las opciones");
 
                     acumulador.gastar(cantidad, catGasto, fecha, concepto);
+                    Gasto gasto = new Gasto(fecha, concepto, cantidad, catGasto);
+                    gasto.save("./data/movimientos.dat");
                     
                     break;
                 case "S": // Si no es I G o S habra que volver a pedir
