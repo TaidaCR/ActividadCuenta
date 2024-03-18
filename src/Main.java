@@ -3,9 +3,9 @@ package src;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import src.logica.CategoriaGasto;
 import src.logica.CategoriaIngreso;
 import src.logica.Cuenta;
-import src.logica.Movimiento;
 import src.presentacion.Validador;
 
 public class Main {
@@ -23,29 +23,34 @@ public class Main {
             String concepto;
             LocalDate fecha;
             CategoriaIngreso catIngreso;
+            CategoriaGasto catGasto;
 
 
             switch (respuesta.toUpperCase()) {
                 case "I":
-                    cantidad = validador.pideNumero("Cantidad: ", "Debe ser un número válido.");
+                    cantidad = validador.pideNumero("Cantidad: ","Debe ser un numero valido");
                     
-                    System.out.print("Concepto: ");
-                    concepto = scanner.nextLine();
+                    concepto = validador.pideConcepto("Concepto: ", "Debes introducir un concepto de", 5);
 
-                    fecha = validador.pideFecha("Fecha:", "La fecha debe ser YYYY-MM-DD.");
+                    fecha = validador.pideFecha("Fecha:","La fecha debe ser YYYY-MM-DD.");
+
+                    catIngreso = validador.pideCatIngreso("Categoria Ingreso", "Elige una de las opciones");
                     
-                    catIngreso = validador.pideCatIngreso("Categoria Ingreso", "Elige una de las opciones.");
-                
-
-                    Movimiento mv = new Movimiento(fecha, concepto, cantidad);
                     acumulador.ingresar(cantidad, catIngreso, fecha, concepto);
 
                     break;
                 case "G":
-                    System.out.print("Cantidad: ");
-                    cantidad = scanner.nextFloat();
-                    scanner.nextLine();
-                    //acumulador.gastar(cantidad);
+                    
+                    cantidad = validador.pideNumero("Cantida:","Debe ser un numero valido");
+
+                    concepto = validador.pideConcepto("Concepto:", "Debes introducir un concepto de", 5);
+
+                    fecha = validador.pideFecha("Fecha:","La fecha debe ser YYYY-MM-DD.");
+
+                    catGasto = validador.pideCatGasto("Categoria Gasto", "Elige una de las opciones");
+
+                    acumulador.gastar(cantidad, catGasto, fecha, concepto);
+                    
                     break;
                 case "S": // Si no es I G o S habra que volver a pedir
                     seguirEnBucle = false;

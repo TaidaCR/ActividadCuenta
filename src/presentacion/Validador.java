@@ -11,23 +11,26 @@ import src.logica.CategoriaIngreso;
 public class Validador {
     private Scanner scanner = new Scanner(System.in);
 
-    public LocalDate pideFecha(String mensaje, String msgError) {
+    public LocalDate pideFecha(String mensaje, String msgError){
         boolean fechaIncorrecta = true;
         String fecha;
-        LocalDate resultado = LocalDate.parse("0001-01-01");
+        LocalDate resultado = null;
+        LocalDate today = LocalDate.now();
 
         while (fechaIncorrecta) {
             System.out.print(mensaje);
-
             fecha = scanner.nextLine();
-            try{
+            try {
                 resultado = LocalDate.parse(fecha);
-                fechaIncorrecta = false;
+                if(!resultado.isAfter(today)){
+                    fechaIncorrecta = false;
+                } else {
+                    System.out.println(msgError);
+                }
             } catch (DateTimeParseException err) {
                 System.out.println(msgError);
             }
         }
-
         return resultado;
     }
 
@@ -35,57 +38,122 @@ public class Validador {
         boolean valorIncorrecto = true;
         float valor = 0;
 
-        while (valorIncorrecto) {
+        while(valorIncorrecto) {
             System.out.print(mensaje);
             try {
                 valor = scanner.nextFloat();
-                valorIncorrecto = false;
-            } catch ( InputMismatchException err ) {
+                
+                if (valor > 0){
+                    valorIncorrecto = false;
+                } else {
+                    System.out.println("Debe ser un numero positivo");
+                }
+            } catch (InputMismatchException err) {
                 System.out.println(msgError);
             }
-            scanner.nextLine();
+        scanner.nextLine();
         }
 
         return valor;
     }
 
-    public CategoriaIngreso pideCatIngreso(String mensaje, String mensajeError) {
-        boolean enumIncorrecto = true;
+    public CategoriaIngreso pideCatIngreso(String mensaje, String msgError) { 
+        boolean enumIncorrecta = true;
         StringBuilder sb = new StringBuilder();
         CategoriaIngreso resultado = null;
 
         sb.append(String.format("%s (", mensaje));
-        for (CategoriaIngreso cat:CategoriaIngreso.values()) {
-            String nombreCategoria = cat.name();
+
+        
+        for (CategoriaIngreso cat: CategoriaIngreso.values()){
+            String nombreCategoria = cat.name() + ", ";
             sb.append(nombreCategoria);
         }
-        sb.append("): ");
+        sb.delete(sb.length() - 2, sb.length()).append("):");
 
         mensaje = sb.toString();
 
         String categoriaIntroducidaPorUsuario = "";
-        while (enumIncorrecto) {
-            System.out.print(mensaje);
-            categoriaIntroducidaPorUsuario = scanner.nextLine(); //EMPLEO
-            // Forma 1
-            // for (CategoriaIngreso cat:CategoriaIngreso.values()) {
-            //     if (categoriaIntroducidaPorUsuario == cat.name()) {
-            //         return cat;
-            //     }
-            // }
-            // System.out.println(mensajeError);
-            // Forma 2
+        
+        
+        while (enumIncorrecta) {
+            System.out.println(mensaje);
+            categoriaIntroducidaPorUsuario = scanner.nextLine().toUpperCase();
+            //forma 1
+            //for(CategoriaIngreso cat: CategoriaIngreso.values()) {
+            //    if (categoriaIntroducidaPorUsuario == cat.name()) {
+            //        return cat;
+            //    }
+            //}
+            //System.out.println(msgError); 
+            //forma 2
+            
             try {
                 resultado = CategoriaIngreso.valueOf(categoriaIntroducidaPorUsuario);
-                enumIncorrecto = false;
+                enumIncorrecta = false;
             } catch (IllegalArgumentException err) {
-                System.out.println(mensajeError);
+                System.out.println( msgError);
             }
-            
         }
-
         return resultado;
+    }
+    
+    public CategoriaGasto pideCatGasto(String mensaje, String msgError) {
+        boolean catGastoIncorrecto = true;
+        StringBuilder sb = new StringBuilder();
+        CategoriaGasto resultado = null;
 
+        sb.append(String.format("%s (", mensaje));
+
+        for (CategoriaGasto cat: CategoriaGasto.values()){
+            String nombreCategoria = cat.name() + ", ";
+            sb.append(nombreCategoria);
+        }
+        sb.delete(sb.length() - 2, sb.length()).append("):");
+
+        mensaje =sb.toString();
+
+        String categoriaIntroducidaPorUsuario = "";
+
+        while(catGastoIncorrecto){
+
+            System.out.println(mensaje);
+            categoriaIntroducidaPorUsuario = scanner.nextLine().toUpperCase();
+
+            try {
+                resultado = CategoriaGasto.valueOf(categoriaIntroducidaPorUsuario);
+                catGastoIncorrecto = false;
+            } catch (IllegalArgumentException err) {
+                System.out.println( msgError);
+            }
+        }
+        return resultado;
+    }
+
+    public String pideConcepto(String mensaje, String msgError, int Longitudmin){
+        boolean conceptoIncorrecto = true;
+        String concepto = null;
+
+        while (conceptoIncorrecto){
+            try {
+                System.out.print(mensaje);
+                
+                concepto = scanner.nextLine();
+
+                if (concepto.length() >= Longitudmin){
+                    conceptoIncorrecto = false;
+                } else {
+                    System.out.println(String.format("La longitud debe ser al menos %d", Longitudmin));
+                }
+    
+            } catch (InputMismatchException err) {
+                System.out.println(msgError);
+            }
+        }
+        return concepto;
     }
 }
+
+
+
 
