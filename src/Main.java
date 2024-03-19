@@ -3,11 +3,11 @@ package src;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-import src.logica.Movimiento;
+
 import src.logica.CategoriaGasto;
 import src.logica.CategoriaIngreso;
 import src.logica.Cuenta;
-import src.logica.EnumKK;
+
 import src.logica.Gasto;
 import src.logica.Ingreso;
 import src.presentacion.Validador;
@@ -58,6 +58,7 @@ public class Main {
                     Gasto gasto = new Gasto(fecha, concepto, cantidad, catGasto);
                     System.out.println(gasto.getFecha());
                     gasto.save("./data/movimientos.dat");
+
                     
                     break;
                 case "S": // Si no es I G o S habra que volver a pedir
