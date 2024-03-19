@@ -11,16 +11,18 @@ public class Cuenta {
     private float ingresos;
     private float gastos;
     private ArrayList<Movimiento> listaMovimientos = new ArrayList<>();
+    private String fichero;
 
     // Constructor principal
-    public Cuenta(float saldo) {
+    public Cuenta(float saldo, String fichero) {
         this.saldo = saldo;
         ingresos = 0;
         gastos = 0;
+        this.fichero = fichero;
     }
 
-    public Cuenta() {
-        this(0);  // equivale a llamar a Cuenta(0)
+    public Cuenta(String fichero) {
+        this(0, fichero);  // equivale a llamar a Cuenta(0)
     }
 
     public float getSaldo() {
@@ -85,8 +87,9 @@ public class Cuenta {
         return listaMovimientos.toArray(new Movimiento[0]);
     }
 
-    public void leerFichero(String fichero) {
+    public void leerFichero() {
         try (BufferedReader br = new BufferedReader(new FileReader(fichero))) {
+
             String linea;
 
             while((linea = br.readLine()) != null) {

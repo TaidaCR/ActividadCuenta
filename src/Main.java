@@ -14,8 +14,8 @@ import src.presentacion.Validador;
 
 public class Main {
     public static void main(String[] args) {
-        Cuenta acumulador = new Cuenta();
-        acumulador.leerFichero("./data/movimientos.dat");
+        Cuenta acumulador = new Cuenta("./data/movimientos.dat");
+        acumulador.leerFichero();
         boolean seguirEnBucle = true;
         Scanner scanner = new Scanner(System.in);
         Validador validador = new Validador();
