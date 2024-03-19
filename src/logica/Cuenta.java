@@ -1,8 +1,10 @@
 package src.logica;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Cuenta {
     private float saldo;
@@ -54,7 +56,6 @@ public class Cuenta {
     public float getTotalGastos() {
         return gastos;
     }
-
     
     public Ingreso[] getIngresos() {
         ArrayList <Ingreso> ingresos = new ArrayList<> ();
@@ -84,7 +85,31 @@ public class Cuenta {
         return listaMovimientos.toArray(new Movimiento[0]);
     }
 
-    
+    public void leerFichero(String fichero) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fichero))) {
+            String linea;
+
+            while((linea = br.readLine()) != null) {
+                // 2024-03-01,sueldo,1200.00,EMPLEO,I
+                String [] campos = linea.split(",");
+                // Determinamos los valors de los campos fecha, concepto, cantidad, categoria y tipo
+                LocalDate fecha = LocalDate.parse(campos[0]);
+                String concepto = campos[1];
+                float cantidad = Float.parseFloat(campos[2]);
+                String tipo = campos[4];
+                if (tipo.equals("I")) {
+                    CategoriaIngreso categoria = CategoriaIngreso.valueOf(campos[3]);
+                    this.ingresar(cantidad,categoria,fecha, concepto);
+                } else {
+                    CategoriaGasto categoria = CategoriaGasto.valueOf(campos[3]);
+                    this.gastar(cantidad, categoria, fecha, concepto);
+                }
+            }
+        } catch (IOException err) {
+            System.out.println("Se ha producido un error en la lectura del fichero");
+            err.printStackTrace();
+        }
+    }
 }
 
 /*

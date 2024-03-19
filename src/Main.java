@@ -15,6 +15,7 @@ import src.presentacion.Validador;
 public class Main {
     public static void main(String[] args) {
         Cuenta acumulador = new Cuenta();
+        acumulador.leerFichero("./data/movimientos.dat");
         boolean seguirEnBucle = true;
         Scanner scanner = new Scanner(System.in);
         Validador validador = new Validador();
@@ -75,6 +76,13 @@ public class Main {
          * Imprimir Total gastos
          * Imprimir Balance
          */
+
+         // consultar el fichero
+         // leer todo el fichero
+         //    para cada registro extraigo la cantidad y el tipo de movimiento
+         //    los ingresos van al total de ingresos
+         //    los gasto van al total de gastos
+
         System.out.printf("Ingresos: %15.2f Euros\n", acumulador.getTotalIngresos());
         System.out.printf("Gastos..: %15.2f Euros\n", acumulador.getTotalGastos());
         System.out.printf("Balance.: %15.2f Euros\n", acumulador.getTotalIngresos() - acumulador.getTotalGastos());
