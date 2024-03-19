@@ -3,10 +3,13 @@ package src;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import src.logica.Movimiento;
 import src.logica.CategoriaGasto;
 import src.logica.CategoriaIngreso;
 import src.logica.Cuenta;
+import src.logica.EnumKK;
 import src.logica.Gasto;
+import src.logica.Ingreso;
 import src.presentacion.Validador;
 
 public class Main {
@@ -27,7 +30,6 @@ public class Main {
             CategoriaIngreso catIngreso;
             CategoriaGasto catGasto;
 
-
             switch (respuesta.toUpperCase()) {
                 case "I":
                     cantidad = validador.pideNumero("Cantidad: ","Debe ser un numero valido");
@@ -39,6 +41,7 @@ public class Main {
                     catIngreso = validador.pideCatIngreso("Categoria Ingreso", "Elige una de las opciones");
                     
                     acumulador.ingresar(cantidad, catIngreso, fecha, concepto);
+                    new Ingreso(fecha, concepto, cantidad, catIngreso).save("./data/movimientos.dat");
 
                     break;
                 case "G":
@@ -53,6 +56,7 @@ public class Main {
 
                     acumulador.gastar(cantidad, catGasto, fecha, concepto);
                     Gasto gasto = new Gasto(fecha, concepto, cantidad, catGasto);
+                    System.out.println(gasto.getFecha());
                     gasto.save("./data/movimientos.dat");
                     
                     break;
