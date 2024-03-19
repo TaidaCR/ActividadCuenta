@@ -1,5 +1,8 @@
 package src.logica;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class Gasto extends Movimiento {
@@ -15,6 +18,16 @@ public class Gasto extends Movimiento {
     }
 
     public void save(String fichero) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fichero, true))) {
+            // convertir los datos del objeto a string
+            String datosGasto = String.format("%s,%s,%.2f,%s%n", getFecha(), getConcepto(), getValor(), categoria);
+            // escribir la cadena en el fichero
+            bw.write(datosGasto);
+            System.out.println("Gasto guardado correctamente.");
 
-    }
+        } catch (IOException error) {
+            System.out.println("Ha ocurrido un error al guardar el gasto en el archivo.");
+            error.printStackTrace();
+        }
+  }
 }
