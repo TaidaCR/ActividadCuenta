@@ -7,13 +7,20 @@ import java.util.Scanner;
 import src.logica.CategoriaGasto;
 import src.logica.CategoriaIngreso;
 import src.logica.Cuenta;
-
+import src.logica.excepciones.FormatError;
 import src.presentacion.Validador;
 
 public class Main {
     public static void main(String[] args) {
         Cuenta acumulador = new Cuenta("./data/movimientos.dat");
-        acumulador.leerFichero();
+        try {
+            acumulador.leerFichero();
+        } catch (FormatError err) {
+            System.out.println(err.getMessage());
+            err.printStackTrace();
+            System.exit(1);
+        }
+        
         boolean seguirEnBucle = true;
         Scanner scanner = new Scanner(System.in);
         Validador validador = new Validador();

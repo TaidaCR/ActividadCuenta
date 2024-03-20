@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
+import src.logica.excepciones.FormatError;
+
 public class Cuenta {
     private float saldo;
     private float ingresos;
@@ -96,45 +98,64 @@ public class Cuenta {
         return listaMovimientos.toArray(new Movimiento[0]);
     }
 
-    public void leerFichero() {
+    private LocalDate convertirAfecha(String strFecha) throws FormatError{
+        try {
+            return LocalDate.parse(strFecha);
+        } catch (DateTimeParseException err) {
+            String msgError = String.format("No es posible convertir %s a fecha\n", strFecha);
+            System.out.printf(msgError);
+            throw new FormatError(msgError);
+        }
+    }
+
+    private float convertirAcantidad(String strCantidad) throws FormatError {
+        try {
+            float cantidad = Float.parseFloat(strCantidad);
+            if (cantidad > 0) {
+                return cantidad;
+            }
+            throw new FormatError("El valor de cantidad debe ser positivo");
+        } catch (NumberFormatException err) {
+            String msgError = String.format("No es posible convertir %s a cantidad\n");
+            System.out.println(msgError);
+            throw new FormatError(msgError);
+        } 
+    }
+
+    private Enum<?> convertirAcategoria(String valor, String tipo) throws FormatError{   
+        Enum<?> categoria = null;
+        try {
+            if (tipo.equals("I")) {
+                categoria = CategoriaIngreso.valueOf(valor);
+            } else if (tipo.equals("G")) {
+                categoria = CategoriaGasto.valueOf(valor);
+            }
+        } catch (IllegalArgumentException err) {
+            String msgError = String.format("No se puede convertir %s en categoria de movimiento", valor);
+            System.out.println(msgError);
+            throw new FormatError(msgError);
+        }
+        return categoria;
+    }
+
+    public void leerFichero() throws FormatError {
         try (BufferedReader br = new BufferedReader(new FileReader(fichero))) {
 
             String linea;
 
             while((linea = br.readLine()) != null) {
                 // 2024-03-01,sueldo,1200.00,EMPLEO,I
+               
                 String [] campos = linea.split(",");
-                LocalDate fecha = LocalDate.of(1,1,1);
-                // Determinamos los valors de los campos fecha, concepto, cantidad, categoria y tipo
-                try {
-                    fecha = LocalDate.parse(campos[0]);
-                } catch (DateTimeParseException err) {
-                    System.out.println("FICHERO CORRUPTO");
-                    System.exit(1);;
-                }
-                
-                String concepto = campos[1];
-                float cantidad = 0;
-                
-                try {
-                    cantidad = Float.parseFloat(campos[2]);
-                    if (cantidad <= 0) {
-                        System.out.println("FICHERO CORRUPTO");
-                        System.exit(1);
-                    }
-                } catch (NumberFormatException err) {
-                    System.out.println("FICHERO CORRUPTO");
-                    System.exit(1);
-                }
-
-                String tipo = campos[4];
-                if (tipo.equals("I")) {
-                    CategoriaIngreso categoria = CategoriaIngreso.valueOf(campos[3]);
-                    this.ingresar(cantidad,categoria,fecha, concepto);
+                LocalDate fecha = convertirAfecha(campos[0]);
+                float cantidad = convertirAcantidad(campos[2]);
+                Enum<?> categoria = convertirAcategoria(campos[3], campos[4]);
+                if (campos[4].equals("I")) {
+                    ingresar(cantidad, (CategoriaIngreso) categoria, fecha, campos[1]);
                 } else {
-                    CategoriaGasto categoria = CategoriaGasto.valueOf(campos[3]);
-                    this.gastar(cantidad, categoria, fecha, concepto);
+                    gastar(cantidad, (CategoriaGasto) categoria, fecha, campos[1]);
                 }
+                
             }
         } catch (FileNotFoundException err) {
             
