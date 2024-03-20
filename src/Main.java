@@ -8,8 +8,6 @@ import src.logica.CategoriaGasto;
 import src.logica.CategoriaIngreso;
 import src.logica.Cuenta;
 
-import src.logica.Gasto;
-import src.logica.Ingreso;
 import src.presentacion.Validador;
 
 public class Main {
@@ -41,8 +39,7 @@ public class Main {
 
                     catIngreso = validador.pideCatIngreso("Categoria Ingreso", "Elige una de las opciones");
                     
-                    acumulador.ingresar(cantidad, catIngreso, fecha, concepto);
-                    new Ingreso(fecha, concepto, cantidad, catIngreso).save("./data/movimientos.dat");
+                    acumulador.ingresar(cantidad, catIngreso, fecha, concepto, true);
 
                     break;
                 case "G":
@@ -55,11 +52,7 @@ public class Main {
 
                     catGasto = validador.pideCatGasto("Categoria Gasto", "Elige una de las opciones");
 
-                    acumulador.gastar(cantidad, catGasto, fecha, concepto);
-                    Gasto gasto = new Gasto(fecha, concepto, cantidad, catGasto);
-                    System.out.println(gasto.getFecha());
-                    gasto.save("./data/movimientos.dat");
-
+                    acumulador.gastar(cantidad, catGasto, fecha, concepto, true);
                     
                     break;
                 case "S": // Si no es I G o S habra que volver a pedir

@@ -1,9 +1,11 @@
 package src.logica;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class Cuenta {
@@ -29,25 +31,32 @@ public class Cuenta {
         return saldo;
     }
 
-    public void ingresar(float valor, CategoriaIngreso categoria, LocalDate fecha, String concepto) {
+    public void ingresar(float valor, CategoriaIngreso categoria, LocalDate fecha, String concepto, boolean guardar) {
         saldo += valor;
         ingresos += valor;
 
-        /*
-         * Instanciar el ingreso con los argumentos de entrada
-         * añadir el ingreso nuevo a this.listaIngresos
-         */
-
         Ingreso ing = new Ingreso(fecha, concepto, valor, categoria);
+        if (guardar) {
+            ing.save(fichero);
+        }
         listaMovimientos.add(ing);
+    }
 
+    public void ingresar(float valor, CategoriaIngreso categoria, LocalDate fecha, String concepto) {
+        ingresar(valor, categoria, fecha, concepto, false);
     }
 
     public void gastar(float valor, CategoriaGasto categoria, LocalDate fecha, String concepto) {
+        gastar(valor, categoria, fecha, concepto, false);
+    }
+    public void gastar(float valor, CategoriaGasto categoria, LocalDate fecha, String concepto, boolean guardar) {
         saldo -= valor;
         gastos += valor;
 
         Gasto gast = new Gasto(fecha, concepto, valor, categoria);
+        if (guardar) {
+            gast.save(fichero);
+        }
         listaMovimientos.add(gast);
     }
 
@@ -95,10 +104,29 @@ public class Cuenta {
             while((linea = br.readLine()) != null) {
                 // 2024-03-01,sueldo,1200.00,EMPLEO,I
                 String [] campos = linea.split(",");
+                LocalDate fecha = LocalDate.of(1,1,1);
                 // Determinamos los valors de los campos fecha, concepto, cantidad, categoria y tipo
-                LocalDate fecha = LocalDate.parse(campos[0]);
+                try {
+                    fecha = LocalDate.parse(campos[0]);
+                } catch (DateTimeParseException err) {
+                    System.out.println("FICHERO CORRUPTO");
+                    System.exit(1);;
+                }
+                
                 String concepto = campos[1];
-                float cantidad = Float.parseFloat(campos[2]);
+                float cantidad = 0;
+                
+                try {
+                    cantidad = Float.parseFloat(campos[2]);
+                    if (cantidad <= 0) {
+                        System.out.println("FICHERO CORRUPTO");
+                        System.exit(1);
+                    }
+                } catch (NumberFormatException err) {
+                    System.out.println("FICHERO CORRUPTO");
+                    System.exit(1);
+                }
+
                 String tipo = campos[4];
                 if (tipo.equals("I")) {
                     CategoriaIngreso categoria = CategoriaIngreso.valueOf(campos[3]);
@@ -108,6 +136,8 @@ public class Cuenta {
                     this.gastar(cantidad, categoria, fecha, concepto);
                 }
             }
+        } catch (FileNotFoundException err) {
+            
         } catch (IOException err) {
             System.out.println("Se ha producido un error en la lectura del fichero");
             err.printStackTrace();
