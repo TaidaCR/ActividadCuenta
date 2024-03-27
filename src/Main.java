@@ -12,7 +12,7 @@ import src.presentacion.Validador;
 
 public class Main {
     public static void main(String[] args) {
-        Cuenta acumulador = new Cuenta("./data/movimientos.dat");
+        Cuenta acumulador = new Cuenta("./dat/movimientos.dat");
         try {
             acumulador.leerFichero();
         } catch (FormatError err) {
@@ -27,7 +27,6 @@ public class Main {
         
 
         while (seguirEnBucle) {
-            System.out.println("SOY LA MODIFICACION DE JULIA");
             System.out.print("Quiere hacer Ingreso / Gasto / Salir? ");
             String respuesta = scanner.nextLine();
             float cantidad;

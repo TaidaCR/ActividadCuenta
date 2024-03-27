@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import src.logica.excepciones.FormatError;
 
@@ -16,6 +18,8 @@ public class Cuenta {
     private float gastos;
     private ArrayList<Movimiento> listaMovimientos = new ArrayList<>();
     private String fichero;
+    Map <CategoriaIngreso, Float> resumenIngresos= new HashMap<>();
+    Map <CategoriaGasto, Float> resumenGastos= new HashMap<>();
 
     // Constructor principal
     public Cuenta(float saldo, String fichero) {
@@ -51,6 +55,7 @@ public class Cuenta {
     public void gastar(float valor, CategoriaGasto categoria, LocalDate fecha, String concepto) {
         gastar(valor, categoria, fecha, concepto, false);
     }
+    
     public void gastar(float valor, CategoriaGasto categoria, LocalDate fecha, String concepto, boolean guardar) {
         saldo -= valor;
         gastos += valor;
@@ -146,7 +151,7 @@ public class Cuenta {
             while((linea = br.readLine()) != null) {
                 // 2024-03-01,sueldo,1200.00,EMPLEO,I
                
-                String [] campos = linea.split(",");
+                String [] campos = linea.split(";");
                 LocalDate fecha = convertirAfecha(campos[0]);
                 float cantidad = convertirAcantidad(campos[2]);
                 Enum<?> categoria = convertirAcategoria(campos[3], campos[4]);
@@ -164,9 +169,95 @@ public class Cuenta {
             err.printStackTrace();
         }
     }
-}
 
-/*
- * 
- * 
- */
+    public String imprimirMovimientos(String fichero){
+        String linea;
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(fichero))) {
+            while((linea = br.readLine()) != null){
+                sb.append(linea+"\n");
+            }
+        }catch (IOException err){
+
+        }
+        return sb.toString();
+    }
+
+    //VA SUMANDO EL VALOR DE CADA SUBCATEGORIA
+    public void ingresarCatIngresos(Enum<?> categoria, float valor) {
+        for (CategoriaIngreso cat: CategoriaIngreso.values()){
+            if (cat.name().equals(categoria.name())){
+                resumenIngresos.put(cat, resumenIngresos.get(categoria)+valor);
+                break;
+            }
+        }
+    }
+
+    //VA SUMANDO EL VALOR DE CADA SUBCATEGORIA
+    public void gastarCatGastos(Enum<?> categoria, float valor) {
+        for (CategoriaGasto cat: CategoriaGasto.values()){
+            if (cat.name().equals(categoria.name())){
+                resumenGastos.put(cat, resumenGastos.get(categoria)+valor);
+                break;
+            }
+        }
+    }
+
+    public String imprimirPorCategoria(String fichero) throws IOException{
+        String linea;
+        StringBuilder sb = new StringBuilder();
+
+        for (CategoriaIngreso cat : CategoriaIngreso.values()) {
+            resumenIngresos.put(cat, 0.0f);
+        }
+
+        for (CategoriaGasto cat : CategoriaGasto.values()) {
+            resumenGastos.put(cat, 0.0f);
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fichero))) {
+            while((linea = br.readLine()) != null){
+                
+                String [] campos = linea.split(";");
+                LocalDate fecha = convertirAfecha(campos[0]);
+                float cantidad = convertirAcantidad(campos[2]);
+                Enum<?> categoria = convertirAcategoria(campos[3], campos[4]);
+                String concepto = campos[1];
+                
+                if (campos[4].equals("I")) {
+                    ingresarCatIngresos(categoria, cantidad);  
+                    ingresar(cantidad,(CategoriaIngreso) categoria,fecha,concepto);
+                } else {
+                    gastarCatGastos(categoria, cantidad);
+                    gastar(cantidad, (CategoriaGasto) categoria, fecha, concepto);
+                }
+            }
+
+        sb.append("INGRESOS        CANTIDAD\n");
+        sb.append("------------------------\n");
+
+        for (CategoriaIngreso cat: CategoriaIngreso.values()){
+            sb.append(String.format("%-10s---->%8.2f€\n",cat,resumenIngresos.get(cat)));
+        }
+
+        sb.append("------------------------\n");
+        sb.append(String.format("TOTAL:         %8.2f€\n",getTotalIngresos()));
+        sb.append("  \n");
+        sb.append("GASTOS          CANTIDAD\n");
+        sb.append("------------------------\n");
+
+        for (CategoriaGasto cat: CategoriaGasto.values()){
+            sb.append(String.format("%-10s---->%8.2f€\n",cat,resumenGastos.get(cat)));
+        }
+
+        sb.append("------------------------\n");
+        sb.append(String.format("TOTAL:         %8.2f€\n",getTotalGastos()));
+
+        } catch (FormatError err) {
+    
+        } catch (IOException err) {
+
+        }
+        return sb.toString();
+    }
+}

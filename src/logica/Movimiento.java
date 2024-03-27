@@ -11,9 +11,6 @@ public abstract class Movimiento {
     private Enum<?> categoria;
     protected String tipo;
 
-    //private Enum<?> categoria;
-
-
     //contructor principal
     public Movimiento(LocalDate fecha, String concepto, float valor, Enum<?> categoria) {
         // Movimiento mv = new Movimiento(new LocalDate.of(1970, 4, 8), "Comprar potitos", 150)
@@ -47,7 +44,7 @@ public abstract class Movimiento {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fichero, true))) {
             // convertir los datos del objeto a string
 
-            String datosMovimiento = String.format("%s,%s,%.2f,%s,%s\n", getFecha(), getConcepto(), getValor(), categoria, tipo);
+            String datosMovimiento = String.format("%s;%s;%.2f;%s;%s\n", getFecha(), getConcepto(), getValor(), categoria, tipo);
             // escribir la cadena en el fichero
             bw.write(datosMovimiento);
             System.out.println("Movimiento guardado correctamente.");
@@ -58,4 +55,5 @@ public abstract class Movimiento {
         }
     }
 
+    
 }
